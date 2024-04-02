@@ -8,11 +8,13 @@ import socket
 import sys
 import time
 
+BYTES_ORDER = "little"
 
 class VsockStream:
     """Client"""
     def __init__(self, conn_tmo=5):
         self.conn_tmo = conn_tmo
+        self.records = []
 
     def connect(self, endpoint):
         """Connect to the remote endpoint"""
@@ -26,21 +28,25 @@ class VsockStream:
         self.recv_data()
 
     def recv_data(self):
-        data = self.sock.recv(1024).decode()
-        delta = int(time.time_ns()) - int(data)
-        print(delta/1000)
+        data = self.sock.recv(1024)
+        curr = time.time_ns()
+        delta = int(curr) - int.from_bytes(data, BYTES_ORDER)
+        self.records.append(delta/1000)
 
     def disconnect(self):
         """Close the client socket"""
         self.sock.close()
+        assert(len(self.records) % 2 )
+        rec = sorted(self.records)
+        print("For ", len(self.records), " samples, median = ", rec[int(len(rec)/2)])
 
 
 def client_handler(args):
     client = VsockStream()
     endpoint = (args.cid, args.port)
     client.connect(endpoint)
-    msg = f'{int(time.time_ns())}'
-    client.send_data(msg.encode())
+    for i in range(1001):
+        client.send_data(int(time.time_ns()).to_bytes(10, BYTES_ORDER))
     client.disconnect()
 
 
@@ -63,6 +69,7 @@ class VsockListener:
             while True:
                 try:
                     data = from_client.recv(1024)
+                    # from_client.sendall(int(time.time_ns()).to_bytes(10, BYTES_ORDER))
                     from_client.sendall(data)
                 except socket.error:
                     break
