@@ -48,7 +48,7 @@ def client_handler(args):
     client = TcpStreamClient()
     endpoint = (args.host, args.port)
     client.connect(endpoint)
-    for i in range(1001):
+    for i in range(10001):
         time.sleep(0.002)
         client.send_data(int(time.time_ns()).to_bytes(10, BYTES_ORDER))
     client.disconnect()
