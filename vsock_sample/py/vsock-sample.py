@@ -43,13 +43,14 @@ class VsockStream:
         res = sum((i - mean) ** 2 for i in rec) / len(rec)
         print("90th: ", rec[round((90/100)*(len(rec)))])
         print("95th: ", rec[round((95/100)*(len(rec)))])
+        print("99th: ", rec[round((99/100)*(len(rec)))])
+        print("Variance: ", res)
 
 def client_handler(args):
     client = VsockStream()
     endpoint = (args.cid, args.port)
     client.connect(endpoint)
-    for i in range(10001):
-        time.sleep(0.002)
+    for i in range(50001):
         client.send_data(int(time.time_ns()).to_bytes(10, BYTES_ORDER))
     client.disconnect()
 
