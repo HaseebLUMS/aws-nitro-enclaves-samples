@@ -1,10 +1,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import sys
+
 PERCENTILE = 90
 WINDOW_SIZE = 10000
 
-DATAFILE = 'records.csv'
+DATAFILE = str(sys.argv[1])
 
 def calculate_percentile_latency(latencies, window_size):
     percentiles = []
@@ -22,9 +24,10 @@ plt.figure(figsize=(10, 6))
 
 plt.plot(percentile_latencies, color='green')
 
+plt.ylim([120, 170])
 plt.xticks([])
 plt.xlabel('Time (60 Minutes)')
 plt.ylabel(f'{PERCENTILE}th Percentile Latency (\u00B5s)')
 plt.title(F'Round Trip Latency For Each {WINDOW_SIZE} Messages Window')
 
-plt.savefig("./result.pdf")
+plt.savefig(f"./{DATAFILE}.pdf")
