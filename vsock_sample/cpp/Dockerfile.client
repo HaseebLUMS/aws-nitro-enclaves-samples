@@ -1,0 +1,30 @@
+# Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+# Use an appropriate base image
+FROM ubuntu:latest
+
+# Set environment variables
+ENV DEBIAN_FRONTEND noninteractive
+
+# Update package lists and install necessary dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    build-essential \
+    cmake \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy the source code into the container
+COPY . /app
+
+# Set the working directory
+WORKDIR /app
+
+# Compile the C++ code
+RUN cmake .
+RUN make
+
+# Command to run the application when the container starts
+CMD ["./vsock-sample", "client", "3", "5005"]
