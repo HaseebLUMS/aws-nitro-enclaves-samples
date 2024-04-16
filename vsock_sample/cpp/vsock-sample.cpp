@@ -41,7 +41,7 @@ public:
     }
 
     void recv_data() {
-        uint8_t buffer[1024];
+        uint8_t buffer[8];
         ssize_t bytes_received = recv(sock, buffer, sizeof(buffer), 0);
         if (bytes_received == -1) {
             perror("recv");
@@ -57,7 +57,7 @@ public:
         close(sock);
         assert(records.size() % 2);
         std::sort(records.begin(), records.end());
-        std::cout << "For " << records.size() << " samples, median = " << records[records.size() / 2] << std::endl;
+        std::cout << "For " << records.size() << " samples, median = " << records[records.size() / 2] << "\u00B5s" << std::endl;
         double mean = std::accumulate(records.begin(), records.end(), 0.0) / records.size();
         double res = std::accumulate(records.begin(), records.end(), 0.0, [mean](double acc, double val) {
             return acc + (val - mean) * (val - mean);
@@ -73,8 +73,8 @@ void client_handler(int cid, int port) {
     VsockStream client;
     struct sockaddr_vm endpoint = {
         .svm_family = AF_VSOCK,
-        .svm_cid = cid,
-        .svm_port = port
+        .svm_port = static_cast<unsigned int>(port),
+        .svm_cid = static_cast<unsigned int>(cid)
     };
     client._connect(&endpoint);
     for (int i = 0; i < 50001; ++i) {
@@ -93,6 +93,7 @@ public:
     VsockListener(int conn_backlog = 128) : conn_backlog(conn_backlog) {}
 
     void _bind(int port) {
+        std::cout << "here" << std::endl;
         sock = socket(AF_VSOCK, SOCK_STREAM, 0);
         if (sock == -1) {
             perror("socket");
@@ -101,8 +102,8 @@ public:
 
         struct sockaddr_vm local_endpoint = {
             .svm_family = AF_VSOCK,
+            .svm_port = static_cast<unsigned int>(port),
             .svm_cid = VMADDR_CID_ANY,
-            .svm_port = port
         };
         if (bind(sock, (struct sockaddr*)&local_endpoint, sizeof(local_endpoint)) == -1) {
             perror("bind");
@@ -124,7 +125,7 @@ public:
                 perror("accept");
                 exit(EXIT_FAILURE);
             }
-            char buffer[1024];
+            char buffer[8];
             ssize_t bytes_received;
             while ((bytes_received = recv(from_client, buffer, sizeof(buffer), 0)) > 0) {
                 if (send(from_client, buffer, bytes_received, 0) == -1) {

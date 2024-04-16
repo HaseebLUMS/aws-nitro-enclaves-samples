@@ -11,7 +11,6 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
     apt-get install -y \
     build-essential \
-    cmake \
     gcc \
     g++ \
     && rm -rf /var/lib/apt/lists/*
@@ -23,8 +22,7 @@ COPY . /app
 WORKDIR /app
 
 # Compile the C++ code
-RUN cmake .
-RUN make
+RUN g++ vsock-sample.cpp -o vsock-sample
 
 # Command to run the application when the container starts
 CMD ["./vsock-sample", "client", "3", "5005"]
