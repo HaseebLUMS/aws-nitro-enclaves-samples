@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 
 import sys
 
-PERCENTILE = 50
-WINDOW_SIZE = 10000
+PERCENTILE = 90
+WINDOW_SIZE = 8000
 
 DATAFILE = str(sys.argv[1])
 
@@ -30,4 +30,4 @@ plt.xlabel('Time (60 Minutes)')
 plt.ylabel(f'{PERCENTILE}th Percentile Latency (\u00B5s)')
 plt.title(F'Round Trip Latency For Each {WINDOW_SIZE} Messages Window')
 
-plt.savefig(f"./50p{DATAFILE}.pdf")
+plt.savefig(f"./{DATAFILE}.pdf")
