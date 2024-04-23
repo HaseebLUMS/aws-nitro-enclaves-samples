@@ -25,5 +25,5 @@ WORKDIR /
 RUN g++ vsock-sample.cpp -o vsock-sample
 
 # Command to run the application when the container starts
-CMD ["taskset", "-c", "2", "./vsock-sample", "server", "5005"]
+CMD ["taskset", "-c", "1", "./vsock-sample", "server", "5005"]
 # CMD ["./vsock-sample", "server", "5005"]

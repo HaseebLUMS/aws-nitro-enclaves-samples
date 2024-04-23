@@ -25,7 +25,7 @@ plt.figure(figsize=(10, 6))
 plt.plot(percentile_latencies, color='green')
 plt.grid()
 
-plt.ylim([80.5, 150.5])
+plt.ylim([80, 150])
 plt.xticks([])
 plt.xlabel('Time (30 Minutes)')
 plt.ylabel(f'{PERCENTILE}th Percentile Latency (\u00B5s)')
