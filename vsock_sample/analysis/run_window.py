@@ -23,10 +23,11 @@ percentile_latencies = calculate_percentile_latency(latency_data, WINDOW_SIZE)
 plt.figure(figsize=(10, 6))
 
 plt.plot(percentile_latencies, color='green')
+plt.grid()
 
-plt.ylim([120, 170])
+plt.ylim([80, 150])
 plt.xticks([])
-plt.xlabel('Time (60 Minutes)')
+plt.xlabel('Time (30 Minutes)')
 plt.ylabel(f'{PERCENTILE}th Percentile Latency (\u00B5s)')
 plt.title(F'Round Trip Latency For Each {WINDOW_SIZE} Messages Window')
 
