@@ -10,7 +10,7 @@ DATAFILES = {
     "2affed_4cpu_1iso.csv": "Pinned CPUs + Isolated",
     "2affed_4cpu.csv": "Pinned CPUs",
     "noaffinity.csv": "Raw",
-    "tmp2.csv": "tmp",
+    "tmp3.csv": "nohz_full isolcpus=domain,managed_irq",
 }
 
 def calculate_percentile_latency(latencies, window_size):

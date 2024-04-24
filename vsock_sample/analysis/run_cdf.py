@@ -7,7 +7,7 @@ DATAFILES = {
     "2affed_4cpu_1iso.csv": "Pinned CPUs + Isolated",
     "2affed_4cpu.csv": "Pinned CPUs",
     "noaffinity.csv": "Raw",
-    "tmp2.csv": "tmp",
+    "tmp3.csv": "nohz_full isolcpus=domain,managed_irq",
 }
 
 plt.figure(figsize=(10, 6))
@@ -17,9 +17,13 @@ for DATAFILE in DATAFILES:
     latency_data = np.loadtxt(DATAFILE, delimiter=',')
 
     percentiles = list(range(0, 100))
-    cdf = np.percentile(latency_data[8000:], percentiles)
+    cdf = np.percentile(latency_data, percentiles)
 
-    plt.plot(cdf, percentiles, label=DATAFILES[DATAFILE])
+    print("For ", DATAFILE)
+    res = round(np.percentile(latency_data, 90) - np.percentile(latency_data, 0), 2)
+    print("Difference between 90th percentile and 0th percentile", res)
+
+    plt.plot(cdf, percentiles, label=f"{DATAFILES[DATAFILE]}, {res}")
 
 plt.grid()
 plt.legend()
