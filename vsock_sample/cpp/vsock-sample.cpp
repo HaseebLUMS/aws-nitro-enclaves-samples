@@ -12,7 +12,7 @@
 #include <fstream>
 #include <string>
 
-const int EXPERIMENT_TIME = 10;  // MINUTES
+const int EXPERIMENT_TIME = 30;  // MINUTES
 const char* LOG_FILE = "records.csv";
 
 void log_and_clear(std::vector<double>& records) {
