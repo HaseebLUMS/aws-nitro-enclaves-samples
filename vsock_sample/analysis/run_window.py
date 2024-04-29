@@ -1,5 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib as mpl
+mpl.rcParams['font.size'] = 15
+plt.rcParams['axes.prop_cycle'] = plt.cycler(color=['#1f77b4', '#2ca02c', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'])
+
 
 import sys
 
@@ -37,4 +41,5 @@ plt.xlabel('Time (30 Minutes)')
 plt.ylabel(f'{PERCENTILE}th Percentile Latency (\u00B5s)')
 plt.title(F'Round Trip Latency For Each {WINDOW_SIZE} Messages Window')
 
+plt.tight_layout()
 plt.savefig(f"./windows/window.pdf")
