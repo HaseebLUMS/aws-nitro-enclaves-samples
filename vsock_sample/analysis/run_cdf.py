@@ -4,11 +4,12 @@ import matplotlib.pyplot as plt
 import sys
 
 DATAFILES = {
-    "2affed_4cpu_1iso.csv": "Pinned CPUs + Isolated",
-    "2affed_4cpu.csv": "Pinned CPUs",
-    "noaffinity.csv": "Raw",
-    "tmp3.csv": "nohz_full isolcpus=domain,managed_irq",
-}
+    # "2affed_4cpu_1iso.csv": "Pinned CPUs + Isolated",
+    #"2affed_4cpu.csv": "Pinned CPUs",
+    "unoptimized.csv": "Base",
+    #"tmp3.csv": "nohz_full isolcpus=domain,managed_irq",
+    "optimized.csv": "Low Jitter Optimizations",
+    }
 
 plt.figure(figsize=(10, 6))
 
