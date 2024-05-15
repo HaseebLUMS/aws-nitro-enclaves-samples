@@ -13,10 +13,13 @@ WINDOW_SIZE = 8000
 DATAFILES = {
     # "2affed_4cpu_1iso.csv": "Pinned CPUs + Isolated",
     # "2affed_4cpu.csv": "Pinned CPUs",
-    "unoptimized.csv": "Base",
+    "unoptimized.csv": "Without Optimizations",
     # "tmp3.csv": "nohz_full isolcpus=domain,managed_irq",
-    "optimized.csv": "Low Jitter Optimizations",
+    "optimized.csv": "With Low-Jitter Optimization",
 }
+
+LINE_STYLES = ['dotted', 'solid']
+COLORS = ['b', 'g']
 
 def calculate_percentile_latency(latencies, window_size):
     percentiles = []
@@ -29,10 +32,10 @@ def calculate_percentile_latency(latencies, window_size):
 
 plt.figure(figsize=(10, 6))
 
-for DATAFILE in DATAFILES:
+for ind, DATAFILE in enumerate(DATAFILES):
     latency_data = np.loadtxt(DATAFILE, delimiter=',')
     percentile_latencies = calculate_percentile_latency(latency_data, WINDOW_SIZE)
-    plt.plot(percentile_latencies, label=DATAFILES[DATAFILE])
+    plt.plot(percentile_latencies, label=DATAFILES[DATAFILE], color=COLORS[ind], linestyle=LINE_STYLES[ind])
 
 plt.grid()
 plt.legend()
