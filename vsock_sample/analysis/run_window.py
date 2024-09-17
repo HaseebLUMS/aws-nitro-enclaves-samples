@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
-mpl.rcParams['font.size'] = 15
+mpl.rcParams['font.size'] = 18
 plt.rcParams['axes.prop_cycle'] = plt.cycler(color=['#1f77b4', '#2ca02c', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'])
 
 
@@ -15,10 +15,10 @@ DATAFILES = {
     # "2affed_4cpu.csv": "Pinned CPUs",
     "unoptimized.csv": "Without Optimizations",
     # "tmp3.csv": "nohz_full isolcpus=domain,managed_irq",
-    "optimized.csv": "With Low-Jitter Optimization",
+    "optimized.csv": "With Optimization",
 }
 
-LINE_STYLES = ['dotted', 'solid']
+LINE_STYLES = [':', 'solid']
 COLORS = ['b', 'g']
 
 def calculate_percentile_latency(latencies, window_size):
@@ -35,14 +35,19 @@ plt.figure(figsize=(10, 6))
 for ind, DATAFILE in enumerate(DATAFILES):
     latency_data = np.loadtxt(DATAFILE, delimiter=',')
     percentile_latencies = calculate_percentile_latency(latency_data, WINDOW_SIZE)
-    plt.plot(percentile_latencies, label=DATAFILES[DATAFILE], color=COLORS[ind], linestyle=LINE_STYLES[ind])
+    if (ind == 0):
+        plt.plot(percentile_latencies, label=DATAFILES[DATAFILE], color=COLORS[ind], linestyle=LINE_STYLES[ind], dashes=(3, 6))
+    else:
+        plt.plot(percentile_latencies, label=DATAFILES[DATAFILE], color=COLORS[ind], linestyle=LINE_STYLES[ind])
+
+
 
 plt.grid()
 plt.legend()
 plt.xticks([])
 plt.xlabel('Time (30 Minutes)')
 plt.ylabel(f'{PERCENTILE}th Percentile Latency (\u00B5s)')
-plt.title(F'Round Trip Latency For Each {WINDOW_SIZE} Messages Window')
+# plt.title(F'Round Trip Latency For Each {WINDOW_SIZE} Messages Window')
 
 plt.tight_layout()
 plt.savefig(f"./windows/window.pdf")

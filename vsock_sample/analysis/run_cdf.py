@@ -40,11 +40,11 @@ for ind, DATAFILE in enumerate(DATAFILES):
     plt.plot(cdf, percentiles, color=COLORS[ind], linestyle=LINE_STYLES[ind])
     # plt.plot(cdf, percentiles, label=f"{DATAFILES[DATAFILE]}", color=COLORS[ind], linestyle=LINE_STYLES[ind])
 
-plt.grid()
+# plt.grid()
 # plt.legend()
 plt.xlabel('Latency (\u00B5s)', fontsize=16)
 plt.ylabel('CDF')
 # plt.title(F'Round Trip Latency CDF')
 
 plt.tight_layout()
-plt.savefig(f"./cdfs/cdf.pdf")
+plt.savefig(f"./cdfs/tee_cdf.pdf")
